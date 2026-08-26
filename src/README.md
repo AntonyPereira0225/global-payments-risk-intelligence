@@ -9,7 +9,8 @@ src/
 |-- config.py
 |-- generate_dimensions.py
 |-- generate_transactions.py
-`-- validate_data.py
+|-- validate_data.py
+`-- run_pipeline.py
 ```
 
 ## What the generator models
@@ -55,21 +56,17 @@ Activate the environment, then install dependencies:
 pip install -r requirements.txt
 ```
 
-Generate dimensions:
+Run the full pipeline in one command:
+
+```bash
+python src/run_pipeline.py
+```
+
+Or run each stage separately:
 
 ```bash
 python src/generate_dimensions.py
-```
-
-Generate the 5M-row transaction fact table:
-
-```bash
 python src/generate_transactions.py
-```
-
-Validate the output:
-
-```bash
 python src/validate_data.py
 ```
 
