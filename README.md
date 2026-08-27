@@ -71,7 +71,7 @@ The warehouse uses a star schema centred on `fact_transactions`, with reusable c
 
 ## SQL Analytics Layer
 
-The repository now includes BigQuery SQL for:
+The executed and validated BigQuery SQL layer includes:
 
 - warehouse validation
 - daily payment performance
@@ -83,7 +83,7 @@ The repository now includes BigQuery SQL for:
 - merchant anomaly detection with rolling baselines and z-scores
 - executive monthly KPIs with `LAG` and month-on-month movement
 
-See the [`sql/`](sql/) directory.
+Validated analytical findings are documented in [`docs/analytical_findings.md`](docs/analytical_findings.md).
 
 ## Repository Structure
 
@@ -104,7 +104,7 @@ global-payments-risk-intelligence/
 - **Phase 1 — Business and data architecture: complete**
 - **Phase 2 — Synthetic data generation and validation: complete**
 - **Phase 3A — BigQuery warehouse load and reconciliation: complete**
-- **Phase 3B — Advanced SQL analytics: scripts created, execution/validation in progress**
+- **Phase 3B — Advanced SQL analytics and validation: complete**
 - Phase 4 — Power BI semantic model and dashboards
 - Phase 5 — Fraud-risk modelling and final portfolio polish
 
