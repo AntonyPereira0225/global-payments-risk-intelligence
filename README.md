@@ -4,7 +4,7 @@ An end-to-end analytics engineering and business intelligence portfolio project 
 
 The project is designed to demonstrate scalable SQL analytics, dimensional modelling, data quality, business intelligence, risk analysis and stakeholder-focused reporting using Python, BigQuery and Power BI.
 
-> **Portfolio note:** All transaction, customer, merchant and fraud data in this repository will be synthetic. The project is not affiliated with any real payment network or financial institution.
+> **Portfolio note:** All transaction, customer, merchant and fraud data in this repository is synthetic. The project is not affiliated with any real payment network or financial institution.
 
 ## Business Objective
 
@@ -28,28 +28,42 @@ Build a trusted analytical platform that enables business, operations and risk s
 | Commercial | Which merchants and customer segments are growing, valuable or underperforming? |
 | Data & BI | Are metrics reproducible, documented and built from validated data? |
 
-## Planned Technology Stack
+## Technology Stack
 
 - Python
 - pandas
 - NumPy
+- Parquet
 - BigQuery
 - SQL
 - Power BI
 - DAX
 - Git / GitHub
 
-## Target Scale
+## Validated Dataset Snapshot
 
-The synthetic analytical environment is planned around approximately:
+The reproducible synthetic-data pipeline has now generated and passed validation on:
 
 - **5,000,000 payment transactions**
 - **150,000 customers**
 - **8,000 merchants**
-- **25–30 countries**
-- **12 months of activity**
+- **75,000 devices**
+- **25 countries**
+- **365 days of activity**
 
-The generated data will intentionally include realistic seasonality, payment declines, cross-border behaviour, merchant variation, rare fraud events and operational anomalies so the analysis is not based on purely random distributions.
+Validated summary metrics from the current deterministic dataset:
+
+| Metric | Result |
+|---|---:|
+| Approval rate | **93.95%** |
+| Decline rate | **6.05%** |
+| Fraud transaction rate | **0.203%** |
+| Cross-border transaction rate | **15.51%** |
+| Transaction value | **$496,439,922.54** |
+| Average transaction value | **$99.29** |
+| Fraud loss | **$766,088.56** |
+
+The generator intentionally includes seasonality, payment declines, cross-border behaviour, merchant variation, rare fraud events and operational differences so later SQL and BI analysis is based on meaningful behavioural relationships rather than purely random data.
 
 ## Analytical Architecture
 
@@ -75,15 +89,15 @@ Power BI semantic model
 Executive, merchant and risk dashboards
 ```
 
-## Planned Data Model
+## Data Model
 
-The core warehouse will use a star-schema design centred on `fact_transactions`.
+The core warehouse uses a star-schema design centred on `fact_transactions`.
 
 ### Fact table
 
 `fact_transactions`
 
-Key fields will include transaction ID, timestamp, customer, merchant, device, geography, payment method, channel, amount, currency, transaction status, decline reason, cross-border indicator, fraud indicator, fraud loss and processing time.
+Key fields include transaction ID, timestamp, customer, merchant, device, geography, payment method, channel, local amount, USD-normalised amount, transaction status, decline reason, cross-border indicator, fraud indicator, fraud loss and processing time.
 
 ### Dimensions
 
@@ -114,7 +128,7 @@ Initial business metrics include:
 
 Formal definitions are maintained in [`docs/metric_definitions.md`](docs/metric_definitions.md).
 
-## Planned Analytical Modules
+## Analytical Modules
 
 ### 1. Payment Performance
 Approval and decline trends by time, geography, channel, payment method and merchant.
@@ -131,6 +145,12 @@ Fraud exposure, fraud loss, transaction velocity, unusual values, geographic ano
 ### 5. Operational Analytics
 Processing time, operational exceptions, decline reasons and emerging performance deterioration.
 
+## Data Quality
+
+The first full pipeline run intentionally failed the validation gate because a currency-normalisation inconsistency caused some USD-normalised transaction values to round to zero. The generator was corrected and the full 5,000,000-row dataset then passed validation.
+
+This incident is documented in [`docs/data_quality_notes.md`](docs/data_quality_notes.md) to demonstrate how automated quality controls can prevent modelling errors from propagating into the warehouse or dashboard layer.
+
 ## Repository Structure
 
 ```text
@@ -138,30 +158,30 @@ global-payments-risk-intelligence/
 |
 |-- README.md
 |-- architecture/
-|   `-- README.md
 |-- data/
-|   `-- README.md
 |-- dashboard/
-|   `-- README.md
 |-- docs/
 |   |-- business_requirements.md
 |   |-- data_model.md
-|   `-- metric_definitions.md
+|   |-- metric_definitions.md
+|   `-- data_quality_notes.md
 |-- models/
-|   `-- README.md
 |-- sql/
-|   `-- README.md
 `-- src/
-    `-- README.md
+    |-- config.py
+    |-- generate_dimensions.py
+    |-- generate_transactions.py
+    |-- validate_data.py
+    `-- run_pipeline.py
 ```
-
-The repository will be expanded incrementally as each layer is implemented and validated.
 
 ## Project Status
 
-**Phase 1 — Business and data architecture: in progress**
-
-Next milestone: design and implement the reproducible synthetic payments data generator before loading the warehouse.
+- **Phase 1 — Business and data architecture: complete**
+- **Phase 2 — Synthetic data generation and validation: complete**
+- **Phase 3 — BigQuery warehouse and advanced SQL analytics: next**
+- Phase 4 — Power BI semantic model and dashboards
+- Phase 5 — Fraud-risk modelling and final portfolio polish
 
 ## Author
 
