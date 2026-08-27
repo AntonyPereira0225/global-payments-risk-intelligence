@@ -34,6 +34,17 @@ The fraud-risk segmentation demonstrates a strong interaction between merchant r
 
 **Interpretation:** effective prioritisation should combine fraud rate, absolute loss, transaction volume and cross-border context. A rate-only approach would over-emphasise small high-rate segments, while a loss-only approach could miss emerging concentrated risks.
 
+## Transaction Velocity
+
+Rolling 1-hour transaction velocity is a useful fraud signal in the simulated dataset.
+
+- **High Velocity** transactions have a 0.717% fraud rate, about 3.6x the 0.198% rate for Normal Velocity transactions.
+- **Elevated Velocity** transactions have a 0.619% fraud rate, about 3.1x the Normal Velocity rate.
+- High and Elevated Velocity together represent only about 1.19% of all transactions, but account for about 3.73% of fraud transactions and 27.2% of total fraud loss.
+- These two bands also represent about 14.2% of transaction value, showing that the alerts are concentrated in relatively high-value transaction activity rather than only high-count bursts.
+
+**Interpretation:** velocity is informative but should not be treated as a standalone fraud rule. It works best as one feature within a broader risk framework alongside customer risk, merchant risk, cross-border status and transaction value.
+
 ## Portfolio Use
 
 These findings will be used to shape the Power BI risk and merchant-intelligence pages. Final dashboard commentary should continue to label the results as synthetic simulation findings and avoid causal or industry-wide claims.
