@@ -22,8 +22,26 @@ The generator now:
 
 This approach preserves comparable transaction-value distributions across countries while still exposing a realistic local-currency transaction field.
 
+## Post-fix validation
+
+The corrected generator was rerun across the complete synthetic dataset and the validation gate returned **PASS**.
+
+Validated dataset results:
+
+| Metric | Result |
+|---|---:|
+| Transactions | 5,000,000 |
+| Approval rate | 93.95% |
+| Decline rate | 6.05% |
+| Fraud transaction rate | 0.203% |
+| Cross-border transaction rate | 15.51% |
+| Transaction value (USD) | $496,439,922.54 |
+| Fraud loss (USD) | $766,088.56 |
+
+The successful rerun confirms that required schemas, row counts, key relationships, transaction amount rules, decline logic, fraud-loss logic and other critical quality checks passed before warehouse loading.
+
 ## Why this matters
 
-The failed validation run is intentionally documented because it demonstrates the role of automated data-quality gates in catching modelling errors before warehouse loading or dashboard development. The corrected pipeline must pass validation before downstream BigQuery and Power BI work is treated as trustworthy.
+The failed validation run is intentionally documented because it demonstrates the role of automated data-quality gates in catching modelling errors before warehouse loading or dashboard development. The corrected pipeline is the trusted source for downstream BigQuery and Power BI work.
 
 > Note: the FX factors are illustrative static conversion factors for this synthetic portfolio project. They are not live or historical market rates.
