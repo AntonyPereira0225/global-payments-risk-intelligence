@@ -2,7 +2,8 @@
 
 Project ID: `global-payments-intelligence`  
 Dataset: `payments_intelligence`  
-Location: `EU`
+Location: `EU`  
+Cloud Storage bucket: `global-payments-intelligence-data-antony0225`
 
 ## Source files
 
@@ -17,19 +18,25 @@ The validated local dataset is generated under `data/generated/` and contains:
 
 The generated data itself is intentionally excluded from GitHub. Only the reproducible Python generator, small samples and documentation belong in the repository.
 
+## Cloud Storage staging path
+
+The validated Parquet files are staged in:
+
+- `gs://global-payments-intelligence-data-antony0225/dimensions/`
+- `gs://global-payments-intelligence-data-antony0225/transactions/`
+
+The transaction fact is loaded from:
+
+`gs://global-payments-intelligence-data-antony0225/transactions/fact_transactions_part_*.parquet`
+
 ## Recommended load path
 
-Use Google Cloud Storage as a staging layer before BigQuery:
-
-1. Create a Cloud Storage bucket in the `EU` location.
-2. Upload the `dimensions` and `transactions` folders from `data/generated/`.
-3. In BigQuery, load each dimension Parquet file into its matching table.
-4. Load all transaction parts into a single `fact_transactions` table with a wildcard URI such as:
-   `gs://YOUR_BUCKET/transactions/fact_transactions_part_*.parquet`
-5. Use Parquet schema autodetection.
-6. Partition `fact_transactions` by `transaction_timestamp` using daily time-unit partitioning.
-7. Cluster the fact table by `merchant_id`, `customer_id`, and `transaction_status`.
-8. Run `sql/01_warehouse_validation.sql` and reconcile results to the local Python validation report.
+1. In BigQuery, load all transaction Parquet parts into a single native table named `fact_transactions`.
+2. Use Parquet schema inference.
+3. Partition `fact_transactions` by `transaction_timestamp` using daily time-unit partitioning.
+4. Cluster the fact table by `merchant_id`, `customer_id`, and `transaction_status`.
+5. Load each dimension Parquet file into its matching native table: `dim_customer`, `dim_merchant`, `dim_device`, `dim_country`, and `dim_date`.
+6. Run `sql/01_warehouse_validation.sql` and reconcile results to the local Python validation report.
 
 ## Expected row counts
 
