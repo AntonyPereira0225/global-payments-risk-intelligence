@@ -45,6 +45,28 @@ Rolling 1-hour transaction velocity is a useful fraud signal in the simulated da
 
 **Interpretation:** velocity is informative but should not be treated as a standalone fraud rule. It works best as one feature within a broader risk framework alongside customer risk, merchant risk, cross-border status and transaction value.
 
+## Merchant Anomaly Detection
+
+The first anomaly-detection rule produced 173,497 flagged merchant-days out of 2,063,801 merchant-day observations, an 8.407% alert rate, and every merchant was flagged at least once.
+
+- The rule uses rolling 14-day merchant baselines and z-scores for transaction count, transaction value and approval rate.
+- Average absolute z-scores among flagged rows were 1.99 for transaction count and 2.35 for transaction value, while average approval-rate z-score was -2.62.
+- The breadth of alerts indicates that the first-pass detector is useful as an exploratory monitoring layer but too noisy for production-style prioritisation.
+
+**Interpretation:** the anomaly layer should be recalibrated before being used as an operational alert queue. A stronger version should combine higher thresholds, multiple-signal confirmation, materiality filters or percentile-based ranking so that the dashboard highlights a smaller, more actionable set of merchant exceptions.
+
+## Executive KPI Trend
+
+The monthly executive KPI layer shows a stable operating profile with seasonal growth in transaction activity.
+
+- Monthly transaction volume increased from 364,702 in January to 518,745 in December, a 42.2% increase.
+- Monthly transaction value increased from about $36.18M in January to $51.20M in December, a 41.5% increase.
+- Approval rate remained very stable throughout the year, ranging from 93.88% to 94.02%, a spread of only 0.14 percentage points.
+- Fraud rate also remained relatively stable, ranging from 0.193% to 0.215%, while absolute fraud loss was more volatile because of changes in transaction mix and volume.
+- December recorded the highest monthly transaction volume and transaction value; February recorded the lowest fraud loss.
+
+**Interpretation:** executive reporting should distinguish stable rate-based KPIs from more volatile absolute-value KPIs. Growth in transaction volume and value does not automatically imply deterioration in approval or fraud rates, so both rate and absolute-loss measures should be presented together.
+
 ## Portfolio Use
 
-These findings will be used to shape the Power BI risk and merchant-intelligence pages. Final dashboard commentary should continue to label the results as synthetic simulation findings and avoid causal or industry-wide claims.
+These findings will be used to shape the Power BI executive, merchant-intelligence and risk pages. Final dashboard commentary should continue to label the results as synthetic simulation findings and avoid causal or industry-wide claims.
