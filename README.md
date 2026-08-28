@@ -34,6 +34,24 @@ Python · pandas · NumPy · Parquet · Google Cloud Storage · BigQuery · SQL 
 
 The first full pipeline run failed a currency-normalisation quality check. The modelling issue was corrected and the complete 5,000,000-row dataset subsequently passed validation. The incident is documented in [`docs/data_quality_notes.md`](docs/data_quality_notes.md).
 
+## Power BI Dashboard
+
+The completed Power BI report is available at [`dashboard/global-payments-risk-intelligence-BI.pbix`](dashboard/global-payments-risk-intelligence-BI.pbix).
+
+### Global Payments Executive Overview
+
+![Global Payments Executive Overview](dashboard/screenshots/01-executive-overview.png)
+
+### Global Payments Merchant Intelligence
+
+![Global Payments Merchant Intelligence](dashboard/screenshots/02-merchant-intelligence.png)
+
+### Global Payments Fraud & Risk Intelligence
+
+![Global Payments Fraud & Risk Intelligence](dashboard/screenshots/03-fraud-risk-intelligence.png)
+
+The three pages cover executive KPI monitoring, merchant value/risk segmentation, and fraud/cross-border risk analysis. See [`dashboard/README.md`](dashboard/README.md) for the dashboard structure and page descriptions.
+
 ## BigQuery Warehouse
 
 The validated data has been loaded to:
@@ -93,6 +111,7 @@ global-payments-risk-intelligence/
 ├── architecture/
 ├── data/
 ├── dashboard/
+│   └── screenshots/
 ├── docs/
 ├── models/
 ├── sql/
@@ -105,7 +124,7 @@ global-payments-risk-intelligence/
 - **Phase 2 — Synthetic data generation and validation: complete**
 - **Phase 3A — BigQuery warehouse load and reconciliation: complete**
 - **Phase 3B — Advanced SQL analytics and validation: complete**
-- Phase 4 — Power BI semantic model and dashboards
+- **Phase 4 — Power BI semantic model and dashboards: complete**
 - Phase 5 — Fraud-risk modelling and final portfolio polish
 
 ## Author
