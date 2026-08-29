@@ -10,21 +10,22 @@ The analytical warehouse uses a star-schema design. The central grain is one row
 
 | Field | Description |
 |---|---|
-| transaction_id | Unique transaction identifier |
+| transaction_id | Unique synthetic transaction identifier |
 | transaction_timestamp | Transaction date and time |
 | customer_id | Foreign key to `dim_customer` |
 | merchant_id | Foreign key to `dim_merchant` |
 | device_id | Foreign key to `dim_device` |
-| country_id | Transaction-country key |
-| payment_method | Card / wallet / bank-linked payment type |
-| channel | E-commerce, mobile app, point-of-sale or recurring |
-| currency | Transaction currency |
+| country_id | Transaction / merchant-country key |
+| payment_method | Synthetic payment-method category |
+| channel | Card-present, web or in-app channel |
+| currency | Merchant local transaction currency |
 | transaction_amount | Gross transaction amount in local currency |
+| transaction_amount_usd | Illustrative USD-equivalent reporting amount using static synthetic FX factors |
 | transaction_status | Approved or declined |
 | decline_reason | Reason populated for declined transactions |
-| is_cross_border | Whether transaction country differs from customer home country |
+| is_cross_border | Whether merchant country differs from customer home country |
 | is_fraud | Confirmed synthetic fraud indicator |
-| fraud_loss_amount | Synthetic confirmed loss for fraudulent approved transactions |
+| fraud_loss_amount_usd | Synthetic confirmed USD-equivalent loss for approved fraudulent transactions |
 | processing_time_ms | Simulated end-to-end processing duration |
 
 ## Dimension: `dim_customer`
@@ -103,16 +104,17 @@ The stored customer dimension intentionally excludes age and other demographic a
 
 ## Relationship Rules
 
-- Every transaction must map to exactly one valid customer and merchant.
-- Transaction geography must exist in `dim_country`.
-- Transaction dates must exist in `dim_date`.
-- A declined transaction should normally have a decline reason.
-- A non-fraud transaction must have zero fraud loss.
-- Cross-border status is derived from transaction country versus customer home country.
-- Dimension attributes describe the entity; transaction-level measures remain in the fact table.
+- Every transaction must map to exactly one valid customer, merchant, device and country.
+- Transaction dates must fall within the implemented date dimension period.
+- Approved transactions have no decline reason; declined transactions require one.
+- Fraud loss is positive only for approved fraudulent transactions and zero otherwise.
+- Cross-border status is derived from merchant country versus customer home country.
+- Dimension attributes describe reusable entities; transaction-level measures remain in the fact table.
 
-## BigQuery Design Intent
+## BigQuery and Consumption Design
 
 The transaction fact is stored in BigQuery and consumed through curated analytical views rather than importing the full 5-million-row fact into Power BI. The portfolio prioritises validated query patterns and compact semantic-model inputs over claiming unmeasured physical optimisations.
+
+The fraud model consumes the dedicated `vw_fraud_model_features` view, which excludes post-outcome leakage fields and high-cardinality entity identifiers.
 
 The final customer-schema cleanup is captured in [`sql/11_schema_cleanup.sql`](../sql/11_schema_cleanup.sql).
