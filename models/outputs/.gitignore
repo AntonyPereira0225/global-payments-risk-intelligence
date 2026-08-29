@@ -1,0 +1,3 @@
+# Local model artefacts are reproducible and intentionally not committed.
+*
+!.gitignore
