@@ -67,7 +67,10 @@ def load_split(client: bigquery.Client, split: str) -> pd.DataFrame:
     if split == "train":
         where = """
         transaction_date < DATE '2025-11-01'
-        AND MOD(ABS(FARM_FINGERPRINT(transaction_id)), @sample_modulus) = 0
+        AND MOD(
+          FARM_FINGERPRINT(CAST(transaction_id AS STRING)),
+          @sample_modulus
+        ) = 0
         """
         job_config = bigquery.QueryJobConfig(
             query_parameters=[
