@@ -78,5 +78,5 @@ The final decision prioritises out-of-sample ranking performance, interpretabili
 - The results cannot be generalised to real payment fraud.
 - No post-outcome fields such as decline reason, transaction status or fraud loss are used as predictive features.
 - Customer, merchant and device identifiers are excluded to reduce memorisation risk.
-- `age_band` is excluded from modelling because it is unnecessary for the stated fraud-risk objective.
+- The stored customer schema intentionally excludes age and other demographic attributes because they are unnecessary for the stated fraud-risk objective.
 - Review-capacity results illustrate queue prioritisation; they do not represent a production decisioning policy or recommended customer treatment.
