@@ -42,6 +42,8 @@ Transactions are written in 250,000-row Parquet chunks with Zstandard compressio
 
 The synthetic generator intentionally creates business relationships rather than independent random columns. Customer segment influences channel usage and cross-border behaviour; merchant category influences amount distribution and risk; fraud probability responds to customer, merchant, channel, geography, time and amount risk factors; approval probability responds to transaction context and fraud status.
 
+The stored synthetic customer schema is deliberately limited to attributes needed for the stated analytics objectives. It does not store age or other demographic attributes. Customer, merchant and device identifiers are synthetic surrogate keys rather than real-world identities.
+
 `transaction_amount` represents the transaction in its local merchant currency. `transaction_amount_usd` is an illustrative standardized reporting value generated using static synthetic conversion factors. These factors are not live market rates and are included only to support comparable global analytics.
 
 ## Version-control policy
