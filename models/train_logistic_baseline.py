@@ -139,7 +139,6 @@ def build_pipeline() -> Pipeline:
         solver="saga",
         max_iter=300,
         random_state=SEED,
-        n_jobs=-1,
     )
 
     return Pipeline(
