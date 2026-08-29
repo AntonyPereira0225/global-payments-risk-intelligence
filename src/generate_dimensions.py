@@ -118,7 +118,10 @@ def build_customer_dimension(
         ((reference_date - signup_dates).days / 30.4375).astype(int),
     )
 
-    age_bands = rng.choice(
+    # Preserve the original random-number sequence used for the validated
+    # portfolio dataset while no longer storing or using a demographic field.
+    # This legacy draw is intentionally discarded.
+    rng.choice(
         ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"],
         size=N_CUSTOMERS,
         p=[0.12, 0.28, 0.24, 0.18, 0.12, 0.06],
@@ -130,7 +133,6 @@ def build_customer_dimension(
             "customer_segment": rng.choice(segment_names, size=N_CUSTOMERS, p=segment_p),
             "signup_date": signup_dates,
             "home_country": rng.choice(country_ids, size=N_CUSTOMERS, p=country_p),
-            "age_band": age_bands,
             "account_tenure_months": tenure_months,
             "risk_segment": rng.choice(risk_names, size=N_CUSTOMERS, p=risk_p),
         }
