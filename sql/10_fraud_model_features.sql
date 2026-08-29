@@ -2,13 +2,15 @@
 -- BigQuery Standard SQL
 --
 -- Purpose:
--- Create a leakage-aware feature set for the optional Python fraud-risk model.
+-- Create a leakage-aware feature set for the Python fraud-risk model.
 -- All data is synthetic. The label is `is_fraud`.
 --
--- Explicitly excluded from the feature set because they are identifiers,
--- post-outcome fields, direct leakage, or unnecessary sensitive attributes:
+-- Explicitly excluded from predictive features because they are identifiers
+-- or post-outcome fields:
 --   transaction_status, decline_reason, fraud_loss_amount_usd,
---   customer_id, merchant_id, device_id, age_band.
+--   customer_id, merchant_id, device_id.
+-- The cleaned customer schema intentionally stores no age or demographic
+-- attribute for this portfolio objective.
 -- transaction_id is retained only as a row identifier and must not be used as
 -- a predictive feature.
 
