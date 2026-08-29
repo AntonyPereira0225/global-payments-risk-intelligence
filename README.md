@@ -1,8 +1,8 @@
 # Global Payments Risk & Merchant Intelligence Platform
 
-An end-to-end analytics engineering and business intelligence portfolio project modelling a fictional global payments company processing millions of transactions across customers, merchants, countries, payment channels and devices.
+An end-to-end analytics engineering, business intelligence and risk-modelling portfolio project modelling a fictional global payments company processing millions of transactions across customers, merchants, countries, payment channels and devices.
 
-The project demonstrates reproducible synthetic-data generation, automated data-quality controls, BigQuery warehousing, dimensional modelling, advanced SQL analytics and Power BI reporting.
+The project demonstrates reproducible synthetic-data generation, automated data-quality controls, BigQuery warehousing, dimensional modelling, advanced SQL analytics, Power BI reporting and leakage-aware fraud-risk modelling.
 
 > **Portfolio note:** All transaction, customer, merchant and fraud data is synthetic. The project is not affiliated with any real payment network or financial institution.
 
@@ -12,7 +12,7 @@ Build a trusted analytical platform that helps executive, commercial, merchant-o
 
 ## Technology Stack
 
-Python · pandas · NumPy · Parquet · Google Cloud Storage · BigQuery · SQL · Power BI · DAX · Git/GitHub
+Python · pandas · NumPy · scikit-learn · Parquet · Google Cloud Storage · BigQuery · SQL · Power BI · DAX · Git/GitHub
 
 ## Validated Dataset
 
@@ -81,6 +81,8 @@ Advanced SQL & KPI views
 Power BI semantic model
         ↓
 Executive, merchant & risk dashboards
+        ↓
+Leakage-aware fraud-risk modelling
 ```
 
 ## Data Model
@@ -100,8 +102,22 @@ The executed and validated BigQuery SQL layer includes:
 - rolling customer transaction velocity
 - merchant anomaly detection with rolling baselines and z-scores
 - executive monthly KPIs with `LAG` and month-on-month movement
+- leakage-aware fraud-modelling feature view
 
 Validated analytical findings are documented in [`docs/analytical_findings.md`](docs/analytical_findings.md).
+
+## Fraud-Risk Modelling
+
+Two models were evaluated using a chronological train/validation/test design and the natural low fraud prevalence:
+
+- **Champion:** Logistic Regression
+- **Challenger:** Histogram Gradient Boosting
+
+On the untouched December test set, the Logistic Regression achieved **0.007505 PR-AUC** and **0.722953 ROC-AUC**. It captured **4.44% of fraud in the top 0.5% of scored transactions**, **6.90% in the top 1%**, and **23.25% in the top 5%**.
+
+The project also evaluates operational review capacity rather than relying only on a maximum-F1 threshold. A validation-derived threshold targeting roughly the top 0.5% of transactions produced about **9.25x lift versus random review** on the December test set.
+
+Full model comparison, operating points, explainability and limitations are documented in [`docs/model_results.md`](docs/model_results.md) and [`models/README.md`](models/README.md).
 
 ## Repository Structure
 
@@ -125,7 +141,8 @@ global-payments-risk-intelligence/
 - **Phase 3A — BigQuery warehouse load and reconciliation: complete**
 - **Phase 3B — Advanced SQL analytics and validation: complete**
 - **Phase 4 — Power BI semantic model and dashboards: complete**
-- Phase 5 — Fraud-risk modelling and final portfolio polish
+- **Phase 5A — Fraud-risk modelling and operating-point analysis: complete**
+- Phase 5B — Final repository and schema polish
 
 ## Author
 
