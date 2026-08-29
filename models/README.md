@@ -20,9 +20,8 @@ The following fields are deliberately excluded from predictive features:
 - `decline_reason` — populated after approval/decline logic and can directly reveal suspected fraud
 - `fraud_loss_amount_usd` — only exists after the fraud outcome
 - customer, merchant and device IDs — high-cardinality identifiers that encourage memorisation rather than generalisable behaviour
-- `age_band` — unnecessary for the business objective and excluded from the risk model
 
-`transaction_id` is retained only for row traceability and deterministic sampling and is never passed to the model.
+The cleaned customer schema intentionally stores no age or other demographic attribute for this portfolio objective. `transaction_id` is retained only for row traceability and deterministic sampling and is never passed to the model.
 
 ## Validation Design
 
