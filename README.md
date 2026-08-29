@@ -32,7 +32,7 @@ Python · pandas · NumPy · scikit-learn · Parquet · Google Cloud Storage · 
 | Average transaction value | **$99.29** |
 | Fraud loss | **$766,088.56** |
 
-The first full pipeline run failed a currency-normalisation quality check. The modelling issue was corrected and the complete 5,000,000-row dataset subsequently passed validation. The incident is documented in [`docs/data_quality_notes.md`](docs/data_quality_notes.md).
+The first full pipeline run failed a currency-normalisation quality check. The data-generation issue was corrected and the complete 5,000,000-row dataset subsequently passed validation. The incident is documented in [`docs/data_quality_notes.md`](docs/data_quality_notes.md).
 
 ## Power BI Dashboard
 
@@ -63,6 +63,8 @@ The validated data has been loaded to:
 
 The warehouse reconciled exactly to the validated local metrics, including 5,000,000 transactions, 93.95% approval rate, 0.203% fraud rate, 15.51% cross-border rate, $496.44M transaction value and $766.09K fraud loss. See [`docs/warehouse_validation.md`](docs/warehouse_validation.md).
 
+The final customer-schema cleanup removed the unnecessary legacy demographic field from `dim_customer`; the executed cleanup SQL is retained in [`sql/11_schema_cleanup.sql`](sql/11_schema_cleanup.sql).
+
 ## Analytical Architecture
 
 ```text
@@ -85,6 +87,8 @@ Executive, merchant & risk dashboards
 Leakage-aware fraud-risk modelling
 ```
 
+The implemented architecture and warehouse flow are documented in [`architecture/README.md`](architecture/README.md).
+
 ## Data Model
 
 The warehouse uses a star schema centred on `fact_transactions`, with reusable customer, merchant, device, country and date dimensions. Detailed definitions are maintained in [`docs/data_model.md`](docs/data_model.md).
@@ -103,6 +107,7 @@ The executed and validated BigQuery SQL layer includes:
 - merchant anomaly detection with rolling baselines and z-scores
 - executive monthly KPIs with `LAG` and month-on-month movement
 - leakage-aware fraud-modelling feature view
+- final customer-schema cleanup
 
 Validated analytical findings are documented in [`docs/analytical_findings.md`](docs/analytical_findings.md).
 
@@ -130,9 +135,12 @@ global-payments-risk-intelligence/
 │   └── screenshots/
 ├── docs/
 ├── models/
+│   └── outputs/
 ├── sql/
 └── src/
 ```
+
+Generated multi-million-row data and local model artefacts are intentionally excluded from version control.
 
 ## Project Status
 
@@ -142,7 +150,9 @@ global-payments-risk-intelligence/
 - **Phase 3B — Advanced SQL analytics and validation: complete**
 - **Phase 4 — Power BI semantic model and dashboards: complete**
 - **Phase 5A — Fraud-risk modelling and operating-point analysis: complete**
-- Phase 5B — Final repository and schema polish
+- **Phase 5B — Final repository and schema polish: complete**
+
+**Overall status: portfolio-ready.** The final audit is documented in [`docs/final_audit.md`](docs/final_audit.md).
 
 ## Author
 
