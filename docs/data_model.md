@@ -37,9 +37,11 @@ The analytical warehouse uses a star-schema design. The central grain is one row
 | customer_segment | Retail behavioural / value segment |
 | signup_date | Synthetic account opening date |
 | home_country | Customer home market |
-| age_band | Non-identifying synthetic age band |
 | account_tenure_months | Tenure at analysis reference date |
 | risk_segment | Synthetic low / medium / high risk classification |
+| transaction_propensity | Synthetic sampling weight used only by the data generator |
+
+The stored customer dimension intentionally excludes age and other demographic attributes because they are unnecessary for the stated analytics and fraud-risk objectives.
 
 ## Dimension: `dim_merchant`
 
@@ -51,9 +53,11 @@ The analytical warehouse uses a star-schema design. The central grain is one row
 | merchant_name | Fictional merchant label |
 | merchant_category | Merchant category / industry |
 | merchant_country | Merchant home market |
-| merchant_size | Small / medium / large |
+| merchant_size | Small / medium / large / enterprise |
 | merchant_tier | Commercial tier |
 | onboarding_date | Synthetic onboarding date |
+| merchant_risk_rating | Synthetic low / medium / high merchant-risk classification |
+| transaction_propensity | Synthetic sampling weight used only by the data generator |
 
 ## Dimension: `dim_device`
 
@@ -62,7 +66,7 @@ The analytical warehouse uses a star-schema design. The central grain is one row
 | Field | Description |
 |---|---|
 | device_id | Unique device key |
-| device_type | Mobile, desktop, tablet or terminal |
+| device_type | Mobile, desktop, tablet or point-of-sale terminal |
 | operating_system | Synthetic operating-system category |
 | browser | Browser / application category where applicable |
 
@@ -76,6 +80,8 @@ The analytical warehouse uses a star-schema design. The central grain is one row
 | country_name | Country name |
 | region | High-level geographic region |
 | currency | Primary synthetic transaction currency |
+| market_weight | Synthetic market sampling weight |
+| risk_multiplier | Synthetic country-level risk multiplier used by the generator |
 
 ## Dimension: `dim_date`
 
@@ -83,6 +89,7 @@ The analytical warehouse uses a star-schema design. The central grain is one row
 
 | Field | Description |
 |---|---|
+| date_id | Integer date key |
 | date | Calendar date |
 | day | Day of month |
 | week | ISO week |
@@ -90,8 +97,9 @@ The analytical warehouse uses a star-schema design. The central grain is one row
 | month_name | Month label |
 | quarter | Calendar quarter |
 | year | Calendar year |
-| day_of_week | Day name / number |
+| day_of_week | Day name |
 | is_weekend | Weekend flag |
+| transaction_weight | Synthetic seasonality weight used by the generator |
 
 ## Relationship Rules
 
@@ -105,4 +113,6 @@ The analytical warehouse uses a star-schema design. The central grain is one row
 
 ## BigQuery Design Intent
 
-When implemented in BigQuery, the transaction fact will be partitioned by transaction date and may be clustered by frequently filtered dimensions such as merchant, customer or transaction status after query patterns are validated. The portfolio will document the final design rather than claiming optimisation before it is measured.
+The transaction fact is stored in BigQuery and consumed through curated analytical views rather than importing the full 5-million-row fact into Power BI. The portfolio prioritises validated query patterns and compact semantic-model inputs over claiming unmeasured physical optimisations.
+
+The final customer-schema cleanup is captured in [`sql/11_schema_cleanup.sql`](../sql/11_schema_cleanup.sql).
